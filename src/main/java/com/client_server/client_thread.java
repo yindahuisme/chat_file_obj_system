@@ -39,6 +39,8 @@ public class client_thread {
     //防止对象处理时阻塞frame，加一个对象处理线程
     private  obj_thread obj_thread;
 
+    //客户端开关
+    private boolean client_switch=true;
     //访问器
 
 
@@ -109,7 +111,7 @@ public class client_thread {
                         System.out.println("客户端开始接收消息");
 
                         try {
-                            if(read!=null) {
+
                                 while ((len = read.read(buffer)) != -1) {
                                     System.out.println("接收到消息");
                                     getStr().delete(0, getStr().length());
@@ -117,8 +119,10 @@ public class client_thread {
                                     buffer = new byte[1024];
                                     //执行操作
                                     analyze_massages_client(getStr().toString());
+                                    if(!client_switch)
+                                        break;
                                 }
-                            }
+
                         }catch (IOException e)
                         {
                             e.printStackTrace();
@@ -265,6 +269,7 @@ public class client_thread {
         if(massage.startsWith("@pwdwrong:"))
         {
             try {
+                client_switch=false;
                 close_client();
             } catch (IOException e) {
                 e.printStackTrace();

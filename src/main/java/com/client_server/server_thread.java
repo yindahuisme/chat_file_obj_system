@@ -26,7 +26,8 @@ public class server_thread {
     //1：对象流状态
     //3：文件流状态
     private int analyze_state=0;
-
+//服务器开关
+    private boolean server_switch=true;
     private ArrayList<String> date_assembling=new ArrayList<String>();
 
     //访问器
@@ -108,7 +109,7 @@ public class server_thread {
         }).start();
     }
     //server消息信息解析
-    public  void analyze_massages_server(byte[] stream,String massage,String client_name,Socket client)
+    public  void analyze_massages_server(byte[] stream,String massage,String client_name,Socket client,OutputStream out,InputStream read)
     {
         System.out.println("服务端开始解析消息");
         System.out.println("massage:"+massage);
@@ -145,7 +146,11 @@ public class server_thread {
                 }
                 getAllserverthreads().put(client.getInetAddress().toString()+"@"+n,client);
                 //密码正确
-               senddata("@pwdcorrect:");
+                try {
+                    ftp.getinstance().getServer_thread().senddata("@pwdcorrect:",client.getOutputStream());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 //连接成功
                 ftp.getinstance().connect_successful_event();
 
@@ -162,17 +167,23 @@ public class server_thread {
             else
             {
                 System.out.println("密码错误");
+                server_switch=false;
+
+
+                //密码错误
+                try {
+                    ftp.getinstance().getServer_thread().senddata("@pwdwrong:",client.getOutputStream());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 //停止服务端线程
                 try {
-                    client.getOutputStream().close();
-                    client.getInputStream().close();
+                    out.close();
+                    read.close();
                     client.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                //密码错误
-                ftp.getinstance().getServer_thread().senddata("@pwdwrong:");
             }
             return;
         }
@@ -180,7 +191,26 @@ public class server_thread {
         //收到消息
         ftp.getinstance().console_log_textarea_append("收到"+client_name+"的消息:"+massage);
     }
-    //发送数据
+
+    //更具输出流发送数据
+    public void senddata(String massage,OutputStream out)
+    {
+        try {
+            out.write(massage.trim().getBytes("gbk"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(massage.equals("@pwdwrong:"))
+        ftp.getinstance().console_log_textarea_append("密码错误，拒绝连接");
+
+    }
+
+    //群发数据
     public void senddata(String massage)
     {
         //群发
@@ -295,7 +325,8 @@ public class server_thread {
                 e.printStackTrace();
             }
             //循环响应
-            while (read!=null) {
+            server_switch=true;
+            while (server_switch) {
                 System.out.println("根据状态选择模式");
                 //消息模式
                 if (getAnalyze_state() == 0) {
@@ -303,17 +334,18 @@ public class server_thread {
                     int len = 0;
                     byte[] buffer = new byte[1024];
                     try {
-                        while ((len = read.read(buffer)) != -1) {
 
+                        while ((len = read.read(buffer)) != -1) {
                             System.out.println("接受到消息");
                             getStr().delete(0, getStr().length());
                             getStr().append(new String(buffer, 0, buffer.length, "gbk").trim());
 
                             //执行操作
-                            analyze_massages_server(buffer, getStr().toString(), getName_client(), getClient());
+                            analyze_massages_server(buffer, getStr().toString(), getName_client(), getClient(),out,read);
                             buffer = new byte[1024];
-                            if(getAnalyze_state()!=0)
+                            if(getAnalyze_state()!=0||!server_switch)
                                 break;
+
                         }
                     } catch (IOException e) {
                         e.printStackTrace();

@@ -3,6 +3,7 @@ import org.junit.Test;
 import javax.annotation.Resource;
 import javax.swing.text.DateFormatter;
 import java.io.*;
+import java.lang.reflect.Field;
 import java.text.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,7 +27,7 @@ public class test {
 //           }
 //       }
 
-        System.out.println(Integer.valueOf("1285376779")-1);
+//        System.out.println(Integer.valueOf("1285376779")-1);
 
 
 //        File resource =new File("E:\\test\\radwtmp_test.txt");
@@ -61,7 +62,68 @@ public class test {
 //        System.out.println(arrayList.contains("jk"));
 
 
+//反射
+//            Class a=null;
+//        try {
+//
+//            a = Class.forName("com.data.woss_data");
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//           Field[] m= a.getFields();
+//        for(Field mm:m)
+//        {
+//            System.out.println(mm.getName());
+//        }
 
 
+
+    }
+
+
+
+
+public static void main(String[] argc)
+    {
+        System.out.println("w:4  m:7  n:20");
+       System.out.println( "距离："+array_instance(4,7,20));
+    }
+
+    //蓝桥杯
+    //矩阵距离问题
+    /**
+     * w 矩阵边长
+     * m 序号1
+     * n 序号2
+     */
+   static int array_instance(int w,int m,int n)
+    {
+        //m的位置
+        //行
+        int row_m;
+        if(m%w!=0)
+        row_m = m/w+1;
+        else
+            row_m=m/w;
+
+        int row_n;
+        if(n%w!=0)
+        row_n = n/w+1;
+        else
+            row_n=n/w;
+        //列
+        int col_m;
+        if(row_m%2==1)
+       col_m = m%w;
+        else col_m=w+1-m%w;
+
+        int col_n;
+        if(row_n%2==1)
+            col_n = n%w;
+        else col_n=w+1-n%w;
+        //距离和
+        return Math.abs(row_m-row_n)+Math.abs(col_m-col_n);
     }
 }
