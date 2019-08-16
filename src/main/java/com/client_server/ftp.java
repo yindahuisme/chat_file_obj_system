@@ -14,9 +14,9 @@ import java.util.Date;
 
 public class ftp extends JFrame
 {
-    //å•ä¾‹æ¨¡å¼
+    //µ¥ÀıÄ£Ê½
     private static ftp ftp;
-    //è®¿é—®å•ä¾‹ï¼ŒåŠ å…¥åŒæ­¥é”ï¼Œçº¿ç¨‹å®‰å…¨
+    //·ÃÎÊµ¥Àı£¬¼ÓÈëÍ¬²½Ëø£¬Ïß³Ì°²È«
     public static synchronized ftp getinstance(){
         if(ftp==null)
         {
@@ -24,19 +24,19 @@ public class ftp extends JFrame
         }
         return ftp;
     }
-    //å±æ€§
+    //ÊôĞÔ
    private client_thread client_thread;
     private  server_thread server_thread;
 
-    //ä¸»panel
+    //Ö÷panel
     JPanel panel;
     JPanel connect_JPanel;
     JScrollPane console_JPanel;
     JPanel connected_JPanel;
-    //å±å¹•åˆ†è¾¨ç‡
+    //ÆÁÄ»·Ö±æÂÊ
     int screenWidth=((int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().width);
     int screenHeight = ((int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().height);
-    //çª—ä½“æ§ä»¶
+    //´°Ìå¿Ø¼ş
     // connect JPanel
     private JLabel connect_ip_lable;
     private JTextField connect_ip_field;
@@ -65,7 +65,7 @@ public class ftp extends JFrame
     private JTextField connect_successful_filepath_textfile;
     private JButton send;
 
-    //è®¿é—®å™¨
+    //·ÃÎÊÆ÷
 
 
     public JCheckBox getConnected_link_checkbox() {
@@ -285,22 +285,22 @@ public class ftp extends JFrame
     }
 
 
-    //æ„é€ å™¨
+    //¹¹ÔìÆ÷
     public ftp()
     {
-        //å€¼åˆå§‹åŒ–
+        //Öµ³õÊ¼»¯
        client_thread=null;
        server_thread=null;
-        //çª—å£åˆå§‹åŒ–
+        //´°¿Ú³õÊ¼»¯
         //System.out.println(screenWidth+""+screenHeight);
         this.setBounds(0,0,400,428);
         this.setLocation(screenWidth/2-200,screenHeight/2-200);
-        this.setTitle("æ•°æ®å‘é€å™¨");
+        this.setTitle("Êı¾İ·¢ËÍÆ÷");
         this.setResizable(false);
         this.setLayout(null);
-        //æ·»åŠ ä¸»panel
+        //Ìí¼ÓÖ÷panel
         panel=(JPanel)this.getContentPane();
-        //æ·»åŠ JPanel
+        //Ìí¼ÓJPanel
         connect_JPanel=new JPanel();
         connect_JPanel.setLayout(null);
         connect_JPanel.setBounds(0,0,200,200);
@@ -320,12 +320,12 @@ public class ftp extends JFrame
         connected_JPanel.setBackground(Color.cyan);
         panel.add(connected_JPanel);
 
-        //JPanelæ·»åŠ æ§ä»¶ï¼Œèµ‹å€¼
+        //JPanelÌí¼Ó¿Ø¼ş£¬¸³Öµ
         //connect-JPanel
         connect_ip_lable=new JLabel();
         connect_JPanel.add(connect_ip_lable);
         connect_ip_lable.setBounds(0,0,100,30);
-        connect_ip_lable.setText("ç›®çš„ip");
+        connect_ip_lable.setText("Ä¿µÄip");
 
         connect_ip_field=new JTextField();
         connect_JPanel.add(connect_ip_field);
@@ -334,7 +334,7 @@ public class ftp extends JFrame
         connect_port_lable=new JLabel();
         connect_JPanel.add(connect_port_lable);
         connect_port_lable.setBounds(0,40,100,30);
-        connect_port_lable.setText("ç›®çš„ç«¯å£");
+        connect_port_lable.setText("Ä¿µÄ¶Ë¿Ú");
 
         connect_port_field=new JTextField();
         connect_JPanel.add(connect_port_field);
@@ -343,7 +343,7 @@ public class ftp extends JFrame
         connect_pwd_lable=new JLabel();
         connect_JPanel.add(connect_pwd_lable);
         connect_pwd_lable.setBounds(0,80,100,30);
-        connect_pwd_lable.setText("è¿æ¥å¯†ç ");
+        connect_pwd_lable.setText("Á¬½ÓÃÜÂë");
 
         connect_pwd_field=new JTextField();
         connect_JPanel.add(connect_pwd_field);
@@ -352,33 +352,33 @@ public class ftp extends JFrame
         connect_connect_button=new JButton();
         connect_JPanel.add(connect_connect_button);
         connect_connect_button.setBounds(50,120,100,50);
-        connect_connect_button.setText("è¿æ¥");
+        connect_connect_button.setText("Á¬½Ó");
         connect_connect_button.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e)
             {
-                //å¦‚æœè¾“å…¥ä¸ºç©º
+                //Èç¹ûÊäÈëÎª¿Õ
                 if(connect_ip_field.getText().equals(""))
                 {
-                    JOptionPane.showMessageDialog(null,"ç›®çš„ipä¸èƒ½ä¸ºç©º!","error",0);
+                    JOptionPane.showMessageDialog(null,"Ä¿µÄip²»ÄÜÎª¿Õ!","error",0);
                     return;
                 }
                 if(connect_port_field.getText().equals(""))
                 {
-                    JOptionPane.showMessageDialog(null,"ç›®çš„ç«¯å£ä¸èƒ½ä¸ºç©º!","error",0);
+                    JOptionPane.showMessageDialog(null,"Ä¿µÄ¶Ë¿Ú²»ÄÜÎª¿Õ!","error",0);
                     return;
                 }
                 if(connect_pwd_field.getText().equals(""))
                 {
-                    JOptionPane.showMessageDialog(null,"å¯†ç ä¸èƒ½ä¸ºç©º!","error",0);
+                    JOptionPane.showMessageDialog(null,"ÃÜÂë²»ÄÜÎª¿Õ!","error",0);
                     return;
                 }
-                //æœåŠ¡å™¨è¿æ¥
+                //·şÎñÆ÷Á¬½Ó
                 client_thread=new client_thread(connect_ip_field.getText(),Integer.parseInt(connect_port_field.getText()) );
 
-                //sendè¿æ¥å¯†ç 
+                //sendÁ¬½ÓÃÜÂë
                 try {
-                    System.out.println("å‘é€è¿æ¥å¯†ç ");
+                    System.out.println("·¢ËÍÁ¬½ÓÃÜÂë");
                     getClient_thread().senddata("@pwd:"+ftp.connect_pwd_field.getText());
                 } catch (IOException e1) {
                     e1.printStackTrace();
@@ -392,18 +392,18 @@ public class ftp extends JFrame
         connected_server_checkbox.setBounds(0,0,100,30);
         connected_server_checkbox.setEnabled(false);
         connected_server_checkbox.setSelected(false);
-        connected_server_checkbox.setText("æœåŠ¡çŠ¶æ€");
+        connected_server_checkbox.setText("·şÎñ×´Ì¬");
 
         connected_link_checkbox=new JCheckBox();
         connected_JPanel.add(connected_link_checkbox);
         connected_link_checkbox.setBounds(0,35,100,30);
         connected_link_checkbox.setEnabled(false);
         connected_link_checkbox.setSelected(false);
-        connected_link_checkbox.setText("è¿æ¥çŠ¶æ€");
+        connected_link_checkbox.setText("Á¬½Ó×´Ì¬");
 
         connected_port_lable=new JLabel();
         connected_JPanel.add(connected_port_lable);
-        connected_port_lable.setText("ç«¯å£");
+        connected_port_lable.setText("¶Ë¿Ú");
         connected_port_lable.setBounds(0,70,100,30);
 
         connected_port_field=new JTextField();
@@ -412,7 +412,7 @@ public class ftp extends JFrame
 
         connected_pwd_lable=new JLabel();
         connected_JPanel.add(connected_pwd_lable);
-        connected_pwd_lable.setText("å¯†ç ");
+        connected_pwd_lable.setText("ÃÜÂë");
         connected_pwd_lable.setBounds(0,105,100,30);
 
         connected_pwd_field=new JTextField();
@@ -421,7 +421,7 @@ public class ftp extends JFrame
 
         connected_savefile_lable=new JLabel();
         connected_JPanel.add(connected_savefile_lable);
-        connected_savefile_lable.setText("ä¿å­˜è·¯å¾„");
+        connected_savefile_lable.setText("±£´æÂ·¾¶");
         connected_savefile_lable.setBounds(0,140,100,30);
 
         connected_savefile_filechooser=new JTextField();
@@ -430,44 +430,44 @@ public class ftp extends JFrame
 
         connected_start_button=new JButton();
         connected_JPanel.add(connected_start_button);
-        connected_start_button.setText("åˆ›å»º");
+        connected_start_button.setText("´´½¨");
         connected_start_button.setBounds(50,175,100,25);
         connected_start_button.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e)
             {
-                //å¦‚æœè¾“å…¥ä¸ºç©º
+                //Èç¹ûÊäÈëÎª¿Õ
                 if(connected_port_field.getText().equals(""))
                 {
-                    JOptionPane.showMessageDialog(null,"ç«¯å£ä¸èƒ½ä¸ºç©º!","error",0);
+                    JOptionPane.showMessageDialog(null,"¶Ë¿Ú²»ÄÜÎª¿Õ!","error",0);
                     return;
                 }
                 if(connected_pwd_field.getText().equals(""))
                 {
-                    JOptionPane.showMessageDialog(null,"å¯†ç ä¸èƒ½ä¸ºç©º!","error",0);
+                    JOptionPane.showMessageDialog(null,"ÃÜÂë²»ÄÜÎª¿Õ!","error",0);
                     return;
                 }
                 if(connected_savefile_filechooser.getText().equals(""))
                 {
-                    JOptionPane.showMessageDialog(null,"ä¿å­˜æ–‡ä»¶è·¯å¾„ä¸èƒ½ä¸ºç©º!","error",0);
+                    JOptionPane.showMessageDialog(null,"±£´æÎÄ¼şÂ·¾¶²»ÄÜÎª¿Õ!","error",0);
                     return;
                 }
                 if(!new File(connected_savefile_filechooser.getText()).isDirectory() )
                 {
-                    JOptionPane.showMessageDialog(null,"è¯·å¡«å†™åˆæ³•çš„æ–‡ä»¶ä¿å­˜è·¯å¾„!","error",0);
+                    JOptionPane.showMessageDialog(null,"ÇëÌîĞ´ºÏ·¨µÄÎÄ¼ş±£´æÂ·¾¶!","error",0);
                     return;
                 }
                 try {
                     setServer_thread(new server_thread(Integer.parseInt(connected_port_field.getText())));
-                    System.out.println("æœåŠ¡å™¨åˆ›å»ºæˆåŠŸ");
-                    ftp.connected_server_checkbox.setText("æ¶ˆæ¯æ¨¡å¼");
-                    //æœåŠ¡å™¨åˆ›å»ºæˆåŠŸæ—¥å¿—
-                    ftp.console_log_textarea_append("æœåŠ¡å™¨åˆ›å»ºæˆåŠŸ");
+                    System.out.println("·şÎñÆ÷´´½¨³É¹¦");
+                    ftp.connected_server_checkbox.setText("ÏûÏ¢Ä£Ê½");
+                    //·şÎñÆ÷´´½¨³É¹¦ÈÕÖ¾
+                    ftp.console_log_textarea_append("·şÎñÆ÷´´½¨³É¹¦");
                     ftp.connect_connect_button.setEnabled(false);
                     ftp.connected_start_button.setEnabled(false);
                 } catch (IOException e1)
                 {
-                    System.out.println("æœåŠ¡å™¨åˆ›å»ºå¤±è´¥");
+                    System.out.println("·şÎñÆ÷´´½¨Ê§°Ü");
                 }
 
             }
@@ -477,23 +477,23 @@ public class ftp extends JFrame
         console_log_textarea=new JTextArea();
         console_JPanel.setViewportView(console_log_textarea);
         console_log_textarea.setEnabled(false);
-        console_log_textarea_append("æ—¥å¿—è®°å½•:");
+        console_log_textarea_append("ÈÕÖ¾¼ÇÂ¼:");
 
 
 
     }
-    //connect successfulè¿æ¥æˆåŠŸ
+    //connect successfulÁ¬½Ó³É¹¦
     void connect_successful_event(){
-        //æ‰“å°æ—¥å¿—
+        //´òÓ¡ÈÕÖ¾
 
-        //æ”¹å˜connect panel
+        //¸Ä±äconnect panel
         connect_JPanel.removeAll();
 
         sendpage=new JLabel("null",JLabel.CENTER);
         sendpage.setBounds(0,0,200,30);
         connect_JPanel.add(sendpage);
 
-        connect_successful_filepath_lable=new JLabel("å†…å®¹");
+        connect_successful_filepath_lable=new JLabel("ÄÚÈİ");
         connect_successful_filepath_lable.setBounds(0,40,100,30);
         connect_JPanel.add(connect_successful_filepath_lable);
 
@@ -501,13 +501,13 @@ public class ftp extends JFrame
         connect_successful_filepath_textfile.setBounds(100,40,100,30);
         connect_JPanel.add(connect_successful_filepath_textfile);
 
-        send=new JButton("å‘é€");
+        send=new JButton("·¢ËÍ");
         send.setBounds(50,80,100,30);
         connect_JPanel.add(send);
         send.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                System.out.println("å‘æ¶ˆæ¯");
+                System.out.println("·¢ÏûÏ¢");
 
 
                 try {
@@ -519,13 +519,13 @@ public class ftp extends JFrame
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-                //å†…å®¹æ¸…ç©º
+                //ÄÚÈİÇå¿Õ
                 ftp.getConnect_successful_filepath_textfile().setText("");
             }
         });
     }
     /*
-     * å°†æ—¶é—´æˆ³è½¬æ¢ä¸ºæ—¶é—´
+     * ½«Ê±¼ä´Á×ª»»ÎªÊ±¼ä
      */
     public static String stampToDate(String s){
         String res;
@@ -535,12 +535,12 @@ public class ftp extends JFrame
         res = simpleDateFormat.format(date);
         return res;
     }
-    //logæ§åˆ¶å°ä¿¡æ¯è¿½åŠ 
+    //log¿ØÖÆÌ¨ĞÅÏ¢×·¼Ó
     void console_log_textarea_append(String str){
         DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date=dateFormat.format(new Date());
         console_log_textarea.append(date+str+"\n");
-        //å®ç°è‡ªåŠ¨æ»šåŠ¨
+        //ÊµÏÖ×Ô¶¯¹ö¶¯
         console_log_textarea.setCaretPosition(console_log_textarea.getText().length());
     }
     public static void main(String[] argc)

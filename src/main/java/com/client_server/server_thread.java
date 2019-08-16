@@ -13,24 +13,24 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class server_thread {
-    //ç”³æ˜serversocket
+    //ÉêÃ÷serversocket
     private ServerSocket server;
-    //å­—ç¬¦ä¸²æ¨¡å¼æš‚å­˜å­—ç¬¦
+    //×Ö·û´®Ä£Ê½Ôİ´æ×Ö·û
     private StringBuilder str=new StringBuilder();
-    //å•ä¾‹æ¨¡å¼
+    //µ¥ÀıÄ£Ê½
     private ftp ftpinstance;
-    //hashmapå­˜å‚¨å®¢æˆ·ç«¯
+    //hashmap´æ´¢¿Í»§¶Ë
     private HashMap<String,Socket> allserverthreads=new HashMap<String, Socket>();
-    //æœåŠ¡å™¨è§£æçŠ¶æ€
-    //0ï¼šå­—ç¬¦ä¸²çŠ¶æ€
-    //1ï¼šå¯¹è±¡æµçŠ¶æ€
-    //3ï¼šæ–‡ä»¶æµçŠ¶æ€
+    //·şÎñÆ÷½âÎö×´Ì¬
+    //0£º×Ö·û´®×´Ì¬
+    //1£º¶ÔÏóÁ÷×´Ì¬
+    //3£ºÎÄ¼şÁ÷×´Ì¬
     private int analyze_state=0;
-//æœåŠ¡å™¨å¼€å…³
+//·şÎñÆ÷¿ª¹Ø
     private boolean server_switch=true;
     private ArrayList<String> date_assembling=new ArrayList<String>();
 
-    //è®¿é—®å™¨
+    //·ÃÎÊÆ÷
 
     public ArrayList<String> getDate_assembling() {
         return date_assembling;
@@ -72,10 +72,10 @@ public class server_thread {
         this.str = str;
     }
 
-    //æ„é€ å™¨
+    //¹¹ÔìÆ÷
     public server_thread(final int port) throws IOException {
         ftpinstance=ftp.getinstance();
-        //æœåŠ¡å™¨å¼€å¯æ ‡è¯†
+        //·şÎñÆ÷¿ªÆô±êÊ¶
         //System.out.println("connected_server_checkbox   "+ftpinstance.getConnected_server_checkbox().isSelected());
 
         ftpinstance.getConnected_server_checkbox().setSelected(true);
@@ -86,15 +86,15 @@ public class server_thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //æœåŠ¡å™¨æ¥æ”¶å¥—æ¥å­—çº¿ç¨‹å¼€å¯
+        //·şÎñÆ÷½ÓÊÕÌ×½Ó×ÖÏß³Ì¿ªÆô
         new Thread(new Runnable(){
 
             public void run() {
                 while (true) {
                     try {
-                        //å¼€å§‹ç›‘å¬
+                        //¿ªÊ¼¼àÌı
                         Socket client = getServer().accept();
-                        //å¼€å¯æœåŠ¡çº¿ç¨‹
+                        //¿ªÆô·şÎñÏß³Ì
                         int n=0;
                         while(allserverthreads.containsKey(client.getInetAddress().toString()+"@"+n))
                         {
@@ -108,75 +108,75 @@ public class server_thread {
             }}
         }).start();
     }
-    //serveræ¶ˆæ¯ä¿¡æ¯è§£æ
+    //serverÏûÏ¢ĞÅÏ¢½âÎö
     public  void analyze_massages_server(byte[] stream,String massage,String client_name,Socket client,OutputStream out,InputStream read)
     {
-        System.out.println("æœåŠ¡ç«¯å¼€å§‹è§£ææ¶ˆæ¯");
+        System.out.println("·şÎñ¶Ë¿ªÊ¼½âÎöÏûÏ¢");
         System.out.println("massage:"+massage);
         if(massage.startsWith("@obj:"))
         {
-            //è¿›å…¥å¯¹è±¡æµçŠ¶æ€
+            //½øÈë¶ÔÏóÁ÷×´Ì¬
             setAnalyze_state(1);
-            ftpinstance.getConnected_server_checkbox().setText("å¯¹è±¡æ¨¡å¼");
+            ftpinstance.getConnected_server_checkbox().setText("¶ÔÏóÄ£Ê½");
             return;
         }
         if(massage.startsWith("@file:"))
         {
-            //è¿›å…¥æ–‡ä»¶æµçŠ¶æ€
+            //½øÈëÎÄ¼şÁ÷×´Ì¬
             setAnalyze_state(2);
-            ftpinstance.getConnected_server_checkbox().setText("æ–‡ä»¶æ¨¡å¼");
+            ftpinstance.getConnected_server_checkbox().setText("ÎÄ¼şÄ£Ê½");
             return;
         }
         if(massage.startsWith("@pwd:"))
         {
-            System.out.println("éªŒè¯å¯†ç ");
-            //éªŒè¯å¯†ç 
+            System.out.println("ÑéÖ¤ÃÜÂë");
+            //ÑéÖ¤ÃÜÂë
 
             String sub=massage.substring(5).trim();
-            System.out.println("å®¢æˆ·ç«¯å¯†ç :"+sub+":"+sub.length());
-            System.out.println("æœåŠ¡ç«¯å¯†ç :"+ftp.getinstance().getConnected_pwd_field().getText()+":"+ftp.getinstance(). getConnected_pwd_field().getText().length());
+            System.out.println("¿Í»§¶ËÃÜÂë:"+sub+":"+sub.length());
+            System.out.println("·şÎñ¶ËÃÜÂë:"+ftp.getinstance().getConnected_pwd_field().getText()+":"+ftp.getinstance(). getConnected_pwd_field().getText().length());
             if(sub.equals(ftp.getinstance().getConnected_pwd_field().getText()))
             {
-                System.out.println("å¯†ç æ­£ç¡®");
-                //åŠ å…¥çº¿ç¨‹é›†
+                System.out.println("ÃÜÂëÕıÈ·");
+                //¼ÓÈëÏß³Ì¼¯
                 int n=0;
                 while(allserverthreads.containsKey(client.getInetAddress().toString()+"@"+n))
                 {
                     n++;
                 }
                 getAllserverthreads().put(client.getInetAddress().toString()+"@"+n,client);
-                //å¯†ç æ­£ç¡®
+                //ÃÜÂëÕıÈ·
                 try {
                     ftp.getinstance().getServer_thread().senddata("@pwdcorrect:",client.getOutputStream());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                //è¿æ¥æˆåŠŸ
+                //Á¬½Ó³É¹¦
                 ftp.getinstance().connect_successful_event();
 
-                //æ”¹å˜è¿æ¥çŠ¶æ€
+                //¸Ä±äÁ¬½Ó×´Ì¬
                 ftp.getinstance().getConnected_link_checkbox().setSelected(true);
-                ftp.getinstance().getConnected_link_checkbox().setText("è¿æ¥çŠ¶æ€:"+allserverthreads.size());
+                ftp.getinstance().getConnected_link_checkbox().setText("Á¬½Ó×´Ì¬:"+allserverthreads.size());
                 ftp.getinstance().getConnect_connect_button().setEnabled(false);
-                ftp.getinstance().getSendpage().setText("ç¾¤å‘æ¶ˆæ¯");
-                //æ‰“å°æ¶ˆæ¯
-                ftp.getinstance().console_log_textarea_append(client.getInetAddress()+":è¿æ¥æˆåŠŸ");
-                //åˆ·æ–°panelé¢æ¿
+                ftp.getinstance().getSendpage().setText("Èº·¢ÏûÏ¢");
+                //´òÓ¡ÏûÏ¢
+                ftp.getinstance().console_log_textarea_append(client.getInetAddress()+":Á¬½Ó³É¹¦");
+                //Ë¢ĞÂpanelÃæ°å
                 ftp.getinstance().panel.updateUI();
             }
             else
             {
-                System.out.println("å¯†ç é”™è¯¯");
+                System.out.println("ÃÜÂë´íÎó");
                 server_switch=false;
 
 
-                //å¯†ç é”™è¯¯
+                //ÃÜÂë´íÎó
                 try {
                     ftp.getinstance().getServer_thread().senddata("@pwdwrong:",client.getOutputStream());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                //åœæ­¢æœåŠ¡ç«¯çº¿ç¨‹
+                //Í£Ö¹·şÎñ¶ËÏß³Ì
                 try {
                     out.close();
                     read.close();
@@ -188,11 +188,11 @@ public class server_thread {
             return;
         }
 
-        //æ”¶åˆ°æ¶ˆæ¯
-        ftp.getinstance().console_log_textarea_append("æ”¶åˆ°"+client_name+"çš„æ¶ˆæ¯:"+massage);
+        //ÊÕµ½ÏûÏ¢
+        ftp.getinstance().console_log_textarea_append("ÊÕµ½"+client_name+"µÄÏûÏ¢:"+massage);
     }
 
-    //æ›´å…·è¾“å‡ºæµå‘é€æ•°æ®
+    //¸ü¾ßÊä³öÁ÷·¢ËÍÊı¾İ
     public void senddata(String massage,OutputStream out)
     {
         try {
@@ -206,14 +206,14 @@ public class server_thread {
             e.printStackTrace();
         }
         if(massage.equals("@pwdwrong:"))
-        ftp.getinstance().console_log_textarea_append("å¯†ç é”™è¯¯ï¼Œæ‹’ç»è¿æ¥");
+        ftp.getinstance().console_log_textarea_append("ÃÜÂë´íÎó£¬¾Ü¾øÁ¬½Ó");
 
     }
 
-    //ç¾¤å‘æ•°æ®
+    //Èº·¢Êı¾İ
     public void senddata(String massage)
     {
-        //ç¾¤å‘
+        //Èº·¢
         Iterator<Map.Entry<String, Socket>> iterator = allserverthreads.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, Socket> entry = iterator.next();
@@ -221,15 +221,15 @@ public class server_thread {
             try {
                 entry.getValue().getOutputStream().write(massage.trim().getBytes("gbk"));
                 entry.getValue().getOutputStream().flush();
-                ftp.getinstance().console_log_textarea_append("å‘é€æ¶ˆæ¯åˆ°"+entry.getKey()+":"+massage.trim());
+                ftp.getinstance().console_log_textarea_append("·¢ËÍÏûÏ¢µ½"+entry.getKey()+":"+massage.trim());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        System.out.println("æœåŠ¡å™¨å‘é€æ•°æ®");
+        System.out.println("·şÎñÆ÷·¢ËÍÊı¾İ");
     }
-    //åœæ­¢æœåŠ¡å™¨
+    //Í£Ö¹·şÎñÆ÷
     public void stopserver()
     {
         for(Map.Entry<String,Socket> entry:allserverthreads.entrySet()) {
@@ -257,15 +257,15 @@ public class server_thread {
             e.printStackTrace();
         }
     }
-    //å†…éƒ¨ç±»serverthread
+    //ÄÚ²¿Ààserverthread
     class serverthread extends Thread {
-        //ç§æœ‰å±æ€§
+        //Ë½ÓĞÊôĞÔ
         private String name_client;
         private Socket client;
         private InputStream read;
         private OutputStream out;
 
-        //è®¿é—®å™¨
+        //·ÃÎÊÆ÷
 
 
         public String getName_client() {
@@ -306,13 +306,13 @@ public class server_thread {
             setClient(client);
         }
 
-        //çº¿ç¨‹æ–¹æ³•
+        //Ïß³Ì·½·¨
         @Override
         public void run() {
-            //æ‰“å°è¿æ¥
-            System.out.println("å®¢æˆ·ç«¯è¿æ¥");
+            //´òÓ¡Á¬½Ó
+            System.out.println("¿Í»§¶ËÁ¬½Ó");
 
-            //è·å¾—å®¢æˆ·ç«¯è¾“å‡ºæµ
+            //»ñµÃ¿Í»§¶ËÊä³öÁ÷
             try {
                 out = new BufferedOutputStream(getClient().getOutputStream());
             } catch (IOException e) {
@@ -324,23 +324,23 @@ public class server_thread {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            //å¾ªç¯å“åº”
+            //Ñ­»·ÏìÓ¦
             server_switch=true;
             while (server_switch) {
-                System.out.println("æ ¹æ®çŠ¶æ€é€‰æ‹©æ¨¡å¼");
-                //æ¶ˆæ¯æ¨¡å¼
+                System.out.println("¸ù¾İ×´Ì¬Ñ¡ÔñÄ£Ê½");
+                //ÏûÏ¢Ä£Ê½
                 if (getAnalyze_state() == 0) {
-                    //æš‚å­˜è¯»åˆ°çš„å­—èŠ‚æ•°ç»„é•¿åº¦
+                    //Ôİ´æ¶Áµ½µÄ×Ö½ÚÊı×é³¤¶È
                     int len = 0;
                     byte[] buffer = new byte[1024];
                     try {
 
                         while ((len = read.read(buffer)) != -1) {
-                            System.out.println("æ¥å—åˆ°æ¶ˆæ¯");
+                            System.out.println("½ÓÊÜµ½ÏûÏ¢");
                             getStr().delete(0, getStr().length());
                             getStr().append(new String(buffer, 0, buffer.length, "gbk").trim());
 
-                            //æ‰§è¡Œæ“ä½œ
+                            //Ö´ĞĞ²Ù×÷
                             analyze_massages_server(buffer, getStr().toString(), getName_client(), getClient(),out,read);
                             buffer = new byte[1024];
                             if(getAnalyze_state()!=0||!server_switch)
@@ -351,42 +351,42 @@ public class server_thread {
                         e.printStackTrace();
                     }
                 }
-                //å¯¹è±¡æ¨¡å¼
+                //¶ÔÏóÄ£Ê½
                 if (getAnalyze_state() == 1) {
-                //å¯¹è±¡æ¨¡å¼æ¥æ”¶
-                    System.out.println("æœåŠ¡å™¨å¯¹è±¡æ¨¡å¼");
+                //¶ÔÏóÄ£Ê½½ÓÊÕ
+                    System.out.println("·şÎñÆ÷¶ÔÏóÄ£Ê½");
                     while (read!=null) {
-                        //æ¥æ”¶æ•°æ®
-                        //å…ˆè¿›è¡Œgbkè§£ç å‰30ä¸ªå­—èŠ‚ï¼›
-                        byte[] protocol = new byte[30];
+                        //½ÓÊÕÊı¾İ
+                        //ÏÈ½øĞĞgbk½âÂëÇ°60¸ö×Ö½Ú£»
+                        byte[] protocol = new byte[60];
                         try {
                             getRead().read(protocol);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        //è§£æåè®®
+                        //½âÎöĞ­Òé
                         String pro = null;
                         try {
                             pro = new String(protocol, 0, protocol.length, "gbk");
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
-                        System.out.println("æ–‡ä»¶åè®®å¤´ï¼š"+pro);
+                        System.out.println("ÎÄ¼şĞ­ÒéÍ·£º"+pro);
                         if (pro.startsWith("@massage:")) {
-                            //è¿›å…¥æ¶ˆæ¯æ¨¡å¼
+                            //½øÈëÏûÏ¢Ä£Ê½
                             setAnalyze_state(0);
-                            ftpinstance.getConnected_server_checkbox().setText("æ¶ˆæ¯æ¨¡å¼");
+                            ftpinstance.getConnected_server_checkbox().setText("ÏûÏ¢Ä£Ê½");
                             break;
                         }
                         if (pro.startsWith("@file:")) {
-                            //è¿›å…¥æ–‡ä»¶æ¨¡å¼
+                            //½øÈëÎÄ¼şÄ£Ê½
                             setAnalyze_state(2);
-                            ftpinstance.getConnected_server_checkbox().setText("æ–‡ä»¶æ¨¡å¼");
+                            ftpinstance.getConnected_server_checkbox().setText("ÎÄ¼şÄ£Ê½");
                             break;
                         }
                         if (pro.startsWith("@woss:")) {
-                            //å¼€å§‹æ¥æ”¶æ–‡ä»¶  æ‰“å°æ¥æ”¶æ—¥å¿—
-                            ftp.getinstance().console_log_textarea_append("å¼€å§‹æ¥æ”¶" + getName_client() + "çš„woss.logæ–‡ä»¶");
+                            //¿ªÊ¼½ÓÊÕÎÄ¼ş  ´òÓ¡½ÓÊÕÈÕÖ¾
+                            ftp.getinstance().console_log_textarea_append("¿ªÊ¼½ÓÊÕ" + getName_client() + "µÄwoss.logÎÄ¼ş");
                             ObjectInputStream objectInputStream = null;
 //                            try {
 //                                objectInputStream = new ObjectInputStream(read);
@@ -395,7 +395,7 @@ public class server_thread {
 //                            }
                             woss_data obj = null;
 
-                            //æ˜¯å¦ä¼ è¾“å®Œæˆ
+                            //ÊÇ·ñ´«ÊäÍê³É
                             boolean complete=false;
                            while (!complete&&read!=null){
                             try {
@@ -410,108 +410,108 @@ public class server_thread {
                                     } catch (ClassNotFoundException e) {
                                         e.printStackTrace();
                                     }
-                                    //åˆ¤æ–­æ˜¯å¦ä¼ è¾“å®Œæˆ
-                                    if(obj.getUsername().equals("ä¼ è¾“å®Œæˆå¯¹è±¡"))
+                                    //ÅĞ¶ÏÊÇ·ñ´«ÊäÍê³É
+                                    if(obj.getUsername().equals("´«ÊäÍê³É¶ÔÏó"))
                                     {
                                         complete=true;
                                         break;
                                     }
 
-                                    //å¾—åˆ°å¯¹è±¡
+                                    //µÃµ½¶ÔÏó
                                     String date = obj.getOnline();
-                                    System.out.println("ä¸Šçº¿æ—¶é—´ï¼š" + date);
+                                    System.out.println("ÉÏÏßÊ±¼ä£º" + date);
                                     Pattern pattern1 = Pattern.compile("(\\d{4})-(\\d{1,2})-(\\d{1,2})\\s(\\d{1,2}):(\\d{1,2}):(\\d{1,2})");
                                     Matcher matcher1 = pattern1.matcher(date);
                                     matcher1.find();
-                                    //æ ¹æ®å¹´æœˆæ—¥åˆ›å»ºæ–‡ä»¶å¤¹åŠæ–‡ä»¶å
-                                    //å¾—åˆ°ä¿å­˜è·¯å¾„
+                                    //¸ù¾İÄêÔÂÈÕ´´½¨ÎÄ¼ş¼Ğ¼°ÎÄ¼şÃû
+                                    //µÃµ½±£´æÂ·¾¶
                                     String save_path = ftp.getinstance().getConnected_savefile_filechooser().getText();
                                     String path = "";
-                                    //å¹´
+                                    //Äê
                                     path = save_path + File.separator + "year" + matcher1.group(1);
                                     if (date_assembling.contains(matcher1.group(1))) {
-                                        //å¦‚æœå­˜åœ¨è¯¥å¹´æ–‡ä»¶å¤¹ï¼Œå­˜æ—¥å¿—
+                                        //Èç¹û´æÔÚ¸ÃÄêÎÄ¼ş¼Ğ£¬´æÈÕÖ¾
 //                                        FileOutputStream outputStream = new FileOutputStream(new File(path + File.separator + obj.getUsername() + ".log"));
-//                                        //æ—¥å¿—ä¿¡æ¯
-//                                        String log = "ç”¨æˆ·åï¼š" + obj.getUsername() + "\n" + "æœåŠ¡å™¨åï¼š" + obj.getProtocol_address() + "\n" + "ä¸Šçº¿æ—¶é—´ï¼š" + obj.getOnline() + "\n" + "æŒç»­æ—¶é—´ï¼š" + obj.getOnline_time() + "s" + "\n" + "ç”¨æˆ·ipï¼š" + obj.getIp() + "\n";
+//                                        //ÈÕÖ¾ĞÅÏ¢
+//                                        String log = "ÓÃ»§Ãû£º" + obj.getUsername() + "\n" + "·şÎñÆ÷Ãû£º" + obj.getProtocol_address() + "\n" + "ÉÏÏßÊ±¼ä£º" + obj.getOnline() + "\n" + "³ÖĞøÊ±¼ä£º" + obj.getOnline_time() + "s" + "\n" + "ÓÃ»§ip£º" + obj.getIp() + "\n";
 //                                        outputStream.write(log.getBytes());
 
                                     } else {
-                                        //åˆ›å»ºæ–‡ä»¶å¤¹
+                                        //´´½¨ÎÄ¼ş¼Ğ
 
                                         new File(path).mkdir();
-                                        //åŠ å…¥é›†åˆ
+                                        //¼ÓÈë¼¯ºÏ
                                         date_assembling.add(matcher1.group(1));
                                     }
-                                    //æœˆ
+                                    //ÔÂ
                                     path = save_path + File.separator + "year" + matcher1.group(1) + File.separator + "mon" + matcher1.group(2);
                                     if (date_assembling.contains(matcher1.group(1) + "-" + matcher1.group(2))) {
-                                        //å¦‚æœå­˜åœ¨è¯¥æœˆæ–‡ä»¶å¤¹ï¼Œå­˜æ—¥å¿—
+                                        //Èç¹û´æÔÚ¸ÃÔÂÎÄ¼ş¼Ğ£¬´æÈÕÖ¾
 //                                        FileOutputStream outputStream = new FileOutputStream(new File(path + File.separator + obj.getUsername() + ".log"));
-//                                        //æ—¥å¿—ä¿¡æ¯
-//                                        String log = "ç”¨æˆ·åï¼š" + obj.getUsername() + "\n" + "æœåŠ¡å™¨åï¼š" + obj.getProtocol_address() + "\n" + "ä¸Šçº¿æ—¶é—´ï¼š" + obj.getOnline() + "\n" + "æŒç»­æ—¶é—´ï¼š" + obj.getOnline_time() + "s" + "\n" + "ç”¨æˆ·ipï¼š" + obj.getIp() + "\n";
+//                                        //ÈÕÖ¾ĞÅÏ¢
+//                                        String log = "ÓÃ»§Ãû£º" + obj.getUsername() + "\n" + "·şÎñÆ÷Ãû£º" + obj.getProtocol_address() + "\n" + "ÉÏÏßÊ±¼ä£º" + obj.getOnline() + "\n" + "³ÖĞøÊ±¼ä£º" + obj.getOnline_time() + "s" + "\n" + "ÓÃ»§ip£º" + obj.getIp() + "\n";
 //                                        outputStream.write(log.getBytes());
                                     } else {
-                                        //åˆ›å»ºæ–‡ä»¶å¤¹
+                                        //´´½¨ÎÄ¼ş¼Ğ
                                         new File(path).mkdir();
-                                        //åŠ å…¥é›†åˆ
+                                        //¼ÓÈë¼¯ºÏ
                                         date_assembling.add(matcher1.group(1) + "-" + matcher1.group(2));
                                     }
-                                    //æ—¥
+                                    //ÈÕ
                                     path = save_path + File.separator + "year" + matcher1.group(1) + File.separator + "mon" + matcher1.group(2) + File.separator + "day" + matcher1.group(3);
                                     if (date_assembling.contains(matcher1.group(1) + "-" + matcher1.group(2) + "-" + matcher1.group(3))) {
-                                        //å¦‚æœå­˜åœ¨è¯¥æ—¥æ–‡ä»¶å¤¹ï¼Œå­˜æ—¥å¿—
+                                        //Èç¹û´æÔÚ¸ÃÈÕÎÄ¼ş¼Ğ£¬´æÈÕÖ¾
 //                                        FileOutputStream outputStream = new FileOutputStream(new File(path + File.separator + obj.getUsername() + ".log"));
-//                                        //æ—¥å¿—ä¿¡æ¯
-//                                        String log = "ç”¨æˆ·åï¼š" + obj.getUsername() + "\n" + "æœåŠ¡å™¨åï¼š" + obj.getProtocol_address() + "\n" + "ä¸Šçº¿æ—¶é—´ï¼š" + obj.getOnline() + "\n" + "æŒç»­æ—¶é—´ï¼š" + obj.getOnline_time() + "s" + "\n" + "ç”¨æˆ·ipï¼š" + obj.getIp() + "\n";
+//                                        //ÈÕÖ¾ĞÅÏ¢
+//                                        String log = "ÓÃ»§Ãû£º" + obj.getUsername() + "\n" + "·şÎñÆ÷Ãû£º" + obj.getProtocol_address() + "\n" + "ÉÏÏßÊ±¼ä£º" + obj.getOnline() + "\n" + "³ÖĞøÊ±¼ä£º" + obj.getOnline_time() + "s" + "\n" + "ÓÃ»§ip£º" + obj.getIp() + "\n";
 //                                        outputStream.write(log.getBytes());
                                     } else {
-                                        //åˆ›å»ºæ–‡ä»¶å¤¹
+                                        //´´½¨ÎÄ¼ş¼Ğ
                                         new File(path).mkdir();
-                                        //åŠ å…¥é›†åˆ
+                                        //¼ÓÈë¼¯ºÏ
                                         date_assembling.add(matcher1.group(1) + "-" + matcher1.group(2) + "-" + matcher1.group(3));
                                     }
-                                    //æ—¶
+                                    //Ê±
                                     path = save_path + File.separator + "year" + matcher1.group(1) + File.separator + "mon" + matcher1.group(2) + File.separator + "day" + matcher1.group(3) + File.separator + "hour" + matcher1.group(4);
                                     if (date_assembling.contains(matcher1.group(1) + "-" + matcher1.group(2) + "-" + matcher1.group(3) + "_" + matcher1.group(4))) {
-                                        //å¦‚æœå­˜åœ¨è¯¥æ—¶æ–‡ä»¶å¤¹ï¼Œå­˜æ—¥å¿—
+                                        //Èç¹û´æÔÚ¸ÃÊ±ÎÄ¼ş¼Ğ£¬´æÈÕÖ¾
 //                                        FileOutputStream outputStream = new FileOutputStream(new File(path + File.separator + obj.getUsername() + ".log"));
-//                                        //æ—¥å¿—ä¿¡æ¯
-//                                        String log = "ç”¨æˆ·åï¼š" + obj.getUsername() + "\n" + "æœåŠ¡å™¨åï¼š" + obj.getProtocol_address() + "\n" + "ä¸Šçº¿æ—¶é—´ï¼š" + obj.getOnline() + "\n" + "æŒç»­æ—¶é—´ï¼š" + obj.getOnline_time() + "s" + "\n" + "ç”¨æˆ·ipï¼š" + obj.getIp() + "\n";
+//                                        //ÈÕÖ¾ĞÅÏ¢
+//                                        String log = "ÓÃ»§Ãû£º" + obj.getUsername() + "\n" + "·şÎñÆ÷Ãû£º" + obj.getProtocol_address() + "\n" + "ÉÏÏßÊ±¼ä£º" + obj.getOnline() + "\n" + "³ÖĞøÊ±¼ä£º" + obj.getOnline_time() + "s" + "\n" + "ÓÃ»§ip£º" + obj.getIp() + "\n";
 //                                        outputStream.write(log.getBytes());
                                     } else {
-                                        //åˆ›å»ºæ–‡ä»¶å¤¹
+                                        //´´½¨ÎÄ¼ş¼Ğ
                                         new File(path).mkdir();
-                                        //åŠ å…¥é›†åˆ
+                                        //¼ÓÈë¼¯ºÏ
                                         date_assembling.add(matcher1.group(1) + "-" + matcher1.group(2) + "-" + matcher1.group(3) + "_" + matcher1.group(4));
                                     }
-                                    //åˆ†
+                                    //·Ö
                                     path = save_path + File.separator + "year" + matcher1.group(1) + File.separator + "mon" + matcher1.group(2) + File.separator + "day" + matcher1.group(3) + File.separator + "hour" + matcher1.group(4) + File.separator + "min" + matcher1.group(5);
                                     if (date_assembling.contains(matcher1.group(1) + "-" + matcher1.group(2) + "-" + matcher1.group(3) + "_" + matcher1.group(4) + ":" + matcher1.group(5))) {
-                                        //å¦‚æœå­˜åœ¨è¯¥åˆ†æ–‡ä»¶å¤¹ï¼Œå­˜æ—¥å¿—
+                                        //Èç¹û´æÔÚ¸Ã·ÖÎÄ¼ş¼Ğ£¬´æÈÕÖ¾
 
                                     } else {
-                                        //åˆ›å»ºæ–‡ä»¶å¤¹
+                                        //´´½¨ÎÄ¼ş¼Ğ
                                         new File(path).mkdir();
 
-                                        //åŠ å…¥é›†åˆ
+                                        //¼ÓÈë¼¯ºÏ
                                         date_assembling.add(matcher1.group(1) + "-" + matcher1.group(2) + "-" + matcher1.group(3) + "_" + matcher1.group(4) + ":" + matcher1.group(5));
                                     }
-                                    //ç§’
+                                    //Ãë
                                     path = save_path + File.separator + "year" + matcher1.group(1) + File.separator + "mon" + matcher1.group(2) + File.separator + "day" + matcher1.group(3) + File.separator + "hour" + matcher1.group(4) + File.separator + "min" + matcher1.group(5)+ File.separator + "sec" + matcher1.group(6);
                                     if (date_assembling.contains(matcher1.group(1) + "-" + matcher1.group(2) + "-" + matcher1.group(3) + "_" + matcher1.group(4) + ":" + matcher1.group(5)+":"+matcher1.group(6))) {
-                                        //å¦‚æœå­˜åœ¨è¯¥åˆ†æ–‡ä»¶å¤¹ï¼Œå­˜æ—¥å¿—
+                                        //Èç¹û´æÔÚ¸Ã·ÖÎÄ¼ş¼Ğ£¬´æÈÕÖ¾
 
                                     } else {
-                                        //åˆ›å»ºæ–‡ä»¶å¤¹
+                                        //´´½¨ÎÄ¼ş¼Ğ
                                         new File(path).mkdir();
 
-                                        //åŠ å…¥é›†åˆ
+                                        //¼ÓÈë¼¯ºÏ
                                         date_assembling.add(matcher1.group(1) + "-" + matcher1.group(2) + "-" + matcher1.group(3) + "_" + matcher1.group(4) + ":" + matcher1.group(5)+":"+matcher1.group(6));
                                     }
                                     FileOutputStream outputStream = new FileOutputStream(new File(path + File.separator + obj.getUsername() + ".log"));
-                                    //æ—¥å¿—ä¿¡æ¯
-                                    String log = "ç”¨æˆ·åï¼š" + obj.getUsername() + "\n" + "æœåŠ¡å™¨åï¼š" + obj.getProtocol_address() + "\n" + "ä¸Šçº¿æ—¶é—´ï¼š" + obj.getOnline() + "\n" + "æŒç»­æ—¶é—´ï¼š" + obj.getOnline_time() + "s" + "\n" + "ç”¨æˆ·ipï¼š" + obj.getIp() + "\n";
+                                    //ÈÕÖ¾ĞÅÏ¢
+                                    String log = "ÓÃ»§Ãû£º" + obj.getUsername() + "\n" + "·şÎñÆ÷Ãû£º" + obj.getProtocol_address() + "\n" + "ÉÏÏßÊ±¼ä£º" + obj.getOnline() + "\n" + "³ÖĞøÊ±¼ä£º" + obj.getOnline_time() + "s" + "\n" + "ÓÃ»§ip£º" + obj.getIp() + "\n";
                                     outputStream.write(log.getBytes());
 
                                 }
@@ -526,57 +526,57 @@ public class server_thread {
 
 
                         }
-                            //æ‰“å°æ–‡ä»¶ä¼ è¾“å®Œæˆ
-                            ftp.getinstance().console_log_textarea_append("æ¥æ”¶å®Œæˆ");
+                            //´òÓ¡ÎÄ¼ş´«ÊäÍê³É
+                            ftp.getinstance().console_log_textarea_append("½ÓÊÕÍê³É");
 
-                            //è·³å‡ºæ–‡ä»¶ä¼ è¾“
+                            //Ìø³öÎÄ¼ş´«Êä
                             if(getAnalyze_state()!=1)
                                 break;
 
                         }
                     }
                 }
-                //æ–‡ä»¶æµæ¨¡å¼
+                //ÎÄ¼şÁ÷Ä£Ê½
                 if (getAnalyze_state() == 2) {
-                    System.out.println("æœåŠ¡å™¨æ–‡ä»¶æ¨¡å¼");
-                    //å­˜å‚¨è·¯å¾„
+                    System.out.println("·şÎñÆ÷ÎÄ¼şÄ£Ê½");
+                    //´æ´¢Â·¾¶
                     String save_directory=ftp.getinstance().getConnected_savefile_filechooser().getText();
-                    System.out.println("å­˜å‚¨è·¯å¾„ï¼š"+save_directory);
+                    System.out.println("´æ´¢Â·¾¶£º"+save_directory);
                     while (read!=null) {
-                        //æ¥æ”¶æ•°æ®
-                        //å…ˆè¿›è¡Œgbkè§£ç å‰30ä¸ªå­—èŠ‚ï¼›
-                        byte[] protocol = new byte[30];
+                        //½ÓÊÕÊı¾İ
+                        //ÏÈ½øĞĞgbk½âÂëÇ°60¸ö×Ö½Ú£»
+                        byte[] protocol = new byte[60];
                         try {
                             getRead().read(protocol);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        //è§£æåè®®
+                        //½âÎöĞ­Òé
                         String pro = null;
                         try {
                             pro = new String(protocol, 0, protocol.length, "gbk");
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
-                        System.out.println("æ–‡ä»¶åè®®å¤´ï¼š"+pro);
+                        System.out.println("ÎÄ¼şĞ­ÒéÍ·£º"+pro);
                         if (pro.startsWith("@massage:")) {
-                            //è¿›å…¥æ¶ˆæ¯æ¨¡å¼
+                            //½øÈëÏûÏ¢Ä£Ê½
                             setAnalyze_state(0);
-                            ftpinstance.getConnected_server_checkbox().setText("æ¶ˆæ¯æ¨¡å¼");
+                            ftpinstance.getConnected_server_checkbox().setText("ÏûÏ¢Ä£Ê½");
                             break;
                         }
                         if (pro.startsWith("@obj:")) {
-                            //è¿›å…¥å¯¹è±¡æ¨¡å¼
+                            //½øÈë¶ÔÏóÄ£Ê½
                             setAnalyze_state(1);
-                            ftpinstance.getConnected_server_checkbox().setText("å¯¹è±¡æ¨¡å¼");
+                            ftpinstance.getConnected_server_checkbox().setText("¶ÔÏóÄ£Ê½");
                             break;
                         }
                         if (pro.startsWith("@file:")) {
-                            System.out.println("å¼€å§‹åˆ‡å‰²åè®®åç¼€");
-                            //åˆ‡å‰²å‡ºæ–‡ä»¶åç¼€
+                            System.out.println("¿ªÊ¼ÇĞ¸îĞ­Òéºó×º");
+                            //ÇĞ¸î³öÎÄ¼şºó×º
                             String tail=pro.substring(6).trim();
                             System.out.println("tail:"+tail);
-                            //æ ¹æ®æ–‡ä»¶è·¯å¾„ä»¥åŠæ–‡ä»¶åæ‰“å¼€æµ
+                            //¸ù¾İÎÄ¼şÂ·¾¶ÒÔ¼°ÎÄ¼şÃû´ò¿ªÁ÷
                             FileOutputStream os=null;
 
                             try {
@@ -584,9 +584,9 @@ public class server_thread {
                             } catch (FileNotFoundException e) {
                                 e.printStackTrace();
                             }
-                            System.out.println("ä¿å­˜è·¯å¾„ï¼š"+ftp.getinstance().getConnected_savefile_filechooser().getText()+tail);
-                            //å¼€å§‹æ¥æ”¶æ–‡ä»¶  æ‰“å°æ¥æ”¶æ—¥å¿—
-                            ftp.getinstance().console_log_textarea_append("å¼€å§‹æ¥æ”¶"+getName_client()+"çš„æ–‡ä»¶");
+                            System.out.println("±£´æÂ·¾¶£º"+ftp.getinstance().getConnected_savefile_filechooser().getText()+tail);
+                            //¿ªÊ¼½ÓÊÕÎÄ¼ş  ´òÓ¡½ÓÊÕÈÕÖ¾
+                            ftp.getinstance().console_log_textarea_append("¿ªÊ¼½ÓÊÕ"+getName_client()+"µÄÎÄ¼ş");
 
 
                             byte[] buffer = new byte[1024];
@@ -595,9 +595,9 @@ public class server_thread {
                             try {
                                 while ((len=read.read(buffer))!=-1)
                                 {
-                                    System.out.println("æ”¶åˆ°æ–‡ä»¶æ•°æ®éƒ¨åˆ†");
-                                    os.write(buffer, 0, len);    //å†™å…¥æŒ‡å®šåœ°æ–¹
-                                    System.out.println("æ”¶åˆ°é•¿åº¦ï¼š"+len);
+                                    System.out.println("ÊÕµ½ÎÄ¼şÊı¾İ²¿·Ö");
+                                    os.write(buffer, 0, len);    //Ğ´ÈëÖ¸¶¨µØ·½
+                                    System.out.println("ÊÕµ½³¤¶È£º"+len);
                                     if(len==1024)
                                     continue;
                                     else
@@ -607,10 +607,10 @@ public class server_thread {
                             {
                                 e.printStackTrace();
                             }
-                            //æ‰“å°æ–‡ä»¶ä¼ è¾“å®Œæˆ
-                            ftp.getinstance().console_log_textarea_append("æ¥æ”¶å®Œæˆ");
+                            //´òÓ¡ÎÄ¼ş´«ÊäÍê³É
+                            ftp.getinstance().console_log_textarea_append("½ÓÊÕÍê³É");
 
-                            //è·³å‡ºæ–‡ä»¶ä¼ è¾“
+                            //Ìø³öÎÄ¼ş´«Êä
                             if(getAnalyze_state()!=2)
                             break;
 
